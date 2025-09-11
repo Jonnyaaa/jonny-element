@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "pnpm --filter @toy-element/play dev",
-    "docs:dev":"pnpm --filter @toy-element/docs dev",
+    "story": "pnpm --filter @toy-element/play storybook",
+    "docs:dev": "pnpm --filter @toy-element/docs dev",
     "docs:build": "pnpm --filter @toy-element/docs build",
-    "test":"echo 'todo'"
+    "test": "pnpm --filter @toy-element/components test"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,9 @@
     "@vitejs/plugin-vue": "^5.2.4",
     "@vitejs/plugin-vue-jsx": "^3.1.0",
     "@vue/tsconfig": "^0.5.1",
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "@fortawesome/vue-fontawesome": "^3.0.6",
     "postcss-color-mix": "^1.1.0",
     "postcss-each": "^1.1.0",
     "postcss-each-variables": "^0.3.0",
@@ -34,7 +38,7 @@
     "vue": "^3.5.20",
     "toy-element": "workspace:*",
     "@toy-element/hooks": "workspace:*",
-    "@toy-element/utils": "workspace:*",
-    "@toy-element/theme": "workspace:*"
+    "@toy-element/theme": "workspace:*",
+    "@toy-element/utils": "workspace:*"
   }
 }
