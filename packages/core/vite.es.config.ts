@@ -1,32 +1,22 @@
 import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue"
 // 导入Node.js的path模块，用于处理文件路径（解决不同系统路径格式差异）
 import { resolve } from "path"
+import { readdirSync } from "fs";// Node.js文件系统模块，用于读取目录
+import { filter, map } from "lodash-es";
+import vue from "@vitejs/plugin-vue"
 // 导入vite-plugin-dts插件，用于在打包时自动生成TypeScript类型声明文件（.d.ts）
 import dts from "vite-plugin-dts"
 
-// 定义组件名称列表，使用as const将其转为只读元组（类型更严格，避免意外修改）
-// 这些是组件库中所有独立组件的名称，用于后续拆分打包 chunks
-const COMP_NAMES = [
-  "Alert",
-  "Button",
-  "Collapse",
-  "Dropdown",
-  "Form",
-  "Icon",
-  "Input",
-  "Loading",
-  "Message",
-  "MessageBox",
-  "Notification",
-  "Overlay",
-  "Popconfirm",
-  "Select",
-  "Switch",
-  "Tooltip",
-  "Upload",
-] as const;
+function getDirectoriesSync(basePath: string) {
+  // 读取指定路径下的所有条目（文件/目录），并获取详细信息（是否为目录）
+  const entries = readdirSync(basePath, { withFileTypes: true });
 
+  // 筛选出目录条目，然后提取目录名称并返回数组
+  return map(
+    filter(entries, (entry) => entry.isDirectory()),
+    (entry) => entry.name
+  );
+}
 
 export default defineConfig({
   // 配置Vite插件
@@ -98,10 +88,10 @@ export default defineConfig({
 
           // 4. 每个组件单独拆分为独立的 chunk（按组件名）
           // 遍历组件名称列表，匹配对应组件的文件路径
-          for (const item of COMP_NAMES) {
+          for (const dirName of getDirectoriesSync("../components")) {
             // 若文件路径包含某个组件的目录（如/packages/components/Button）
-            if (id.includes(`/packages/components/${item}`)) {
-              return item;// 输出为 组件名.js（如 Button.js）
+            if (id.includes(`/packages/components/${dirName}`)) {
+              return dirName;// 输出为 组件名.js（如 Button.js）
             }
           }
         }

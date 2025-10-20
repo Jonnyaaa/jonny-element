@@ -7,5 +7,5 @@ import '@toy-element/theme/index.css';// 导入主题样式
 library.add(fas);// 将所有的 free-solid-svg-icons 图标添加到 FontAwesome 的图标库中
 const installer = makeInstaller(components);// 使用工具函数将组件集合转换为安装器
 
-export * from "@toy-element/components";// 导出所有组件，供外部使用
+export * from "../components";// 导出所有组件，供外部使用
 export default installer;// 默认导出安装器，供 Vue 应用使用
