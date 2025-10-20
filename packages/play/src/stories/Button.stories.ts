@@ -2,7 +2,7 @@ import type { Meta, StoryObj, ArgTypes } from "@storybook/vue3"
 import { fn, within, userEvent, expect, clearAllMocks } from "@storybook/test"
 import { set } from "lodash-es";
 
-import { ErButton, ErButtonGroup } from "toy-element"
+import { ErButton, ErButtonGroup } from "jonny-element"
 
 type Story = StoryObj<typeof ErButton> & { argTypes?: ArgTypes }
 

@@ -18,7 +18,7 @@ export default defineConfig({
       entry: resolve(__dirname, "./index.ts"),
 
       // 全局变量名称：当用户通过<script>标签直接引入时，会在window上挂载该变量
-      name: "ToyElement",
+      name: "JonnyElement",
 
       // 输出的文件名前缀
       fileName: "index",

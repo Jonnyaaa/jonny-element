@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "vite-plugin-dts": "^3.9.1",
-    "@toy-element/components": "workspace:*"
+    "@jonny-element/components": "workspace:*"
   },
   "peerDependencies": {
     "vue": "^3.5.20"

@@ -2,9 +2,9 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "Toy-Element",
+  title: "Jonny-Element",
   description: "高仿ElementPlus组件库",
-  base: "/toy-element/",
+  base: "/jonny-element/",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [

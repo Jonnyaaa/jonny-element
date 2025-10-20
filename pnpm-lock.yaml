@@ -8,21 +8,21 @@ importers:
 
   .:
     dependencies:
-      '@toy-element/hooks':
+      '@jonny-element/hooks':
         specifier: workspace:*
         version: link:packages/hooks
-      '@toy-element/theme':
+      '@jonny-element/theme':
         specifier: workspace:*
         version: link:packages/theme
-      '@toy-element/utils':
+      '@jonny-element/utils':
         specifier: workspace:*
         version: link:packages/utils
+      jonny-element:
+        specifier: workspace:*
+        version: link:packages/core
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      toy-element:
-        specifier: workspace:*
-        version: link:packages/core
       vue:
         specifier: ^3.5.20
         version: 3.5.20(typescript@5.8.3)
@@ -130,7 +130,7 @@ importers:
         specifier: ^3.5.20
         version: 3.5.20(typescript@5.8.3)
     devDependencies:
-      '@toy-element/components':
+      '@jonny-element/components':
         specifier: workspace:*
         version: link:../components
       vite-plugin-dts:
@@ -4746,7 +4746,7 @@ snapshots:
     dependencies:
       string-width: 5.1.2
       string-width-cjs: string-width@4.2.3
-      strip-ansi: 7.1.2
+      strip-ansi: 7.1.0
       strip-ansi-cjs: strip-ansi@6.0.1
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
@@ -7957,7 +7957,7 @@ snapshots:
     dependencies:
       eastasianwidth: 0.2.0
       emoji-regex: 9.2.2
-      strip-ansi: 7.1.2
+      strip-ansi: 7.1.0
 
   string-width@8.1.0:
     dependencies:
@@ -8549,7 +8549,7 @@ snapshots:
     dependencies:
       ansi-styles: 6.2.1
       string-width: 5.1.2
-      strip-ansi: 7.1.2
+      strip-ansi: 7.1.0
 
   wrappy@1.0.2: {}
 
