@@ -1,4 +1,4 @@
-import { ErButton, ErButtonGroup, ErIcon } from "@jonny-element/components";
-import type {Plugin} from "vue";
+import { JoButton, JoButtonGroup, JoIcon } from "@jonny-element/components";
+import type { Plugin } from "vue";
 
-export default [ErButton, ErButtonGroup, ErIcon] as Plugin[];//导出数组
+export default [JoButton, JoButtonGroup, JoIcon] as Plugin[];//导出数组

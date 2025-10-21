@@ -1,4 +1,7 @@
-import type { Preview } from '@storybook/vue3-vite'
+// import type { Preview } from '@storybook/vue3-vite'
+import "jonny-element/dist/index.css"
+
+/** @type { import('@storybook/vue3').Preview } */
 
 const preview: Preview = {
   parameters: {

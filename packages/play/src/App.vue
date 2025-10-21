@@ -2,8 +2,8 @@
 </script>
 
 <template>
-  <er-button type="primary" size="small">
+  <jo-button type="primary" size="small">
     test
-  </er-button>
+  </jo-button>
 </template>
 

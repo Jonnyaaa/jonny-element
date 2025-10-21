@@ -3,10 +3,10 @@ import { ref, computed, inject } from 'vue';
 import type { ButtonProps, ButtonEmits, ButtonInstance } from './types'
 import { throttle } from 'lodash-es'
 import { BUTTON_GROUP_CTX_KEY } from './contants'
-import ErIcon from "../Icon/Icon.vue";
+import JoIcon from "../Icon/Icon.vue";
 
 defineOptions({
-  name: 'ErButton',
+  name: 'JoButton',
 
 });
 // 定义 props，使用 ButtonProps 类型约束
@@ -48,14 +48,14 @@ defineExpose<ButtonInstance>({
 <template>
   <component
     ref="_ref"
-    class="er-button"
+    class="jo-button"
     :is="tag"
     :autofocus="autofocus"
     :type="tag === 'button' ? nativeType : void 0"
     :disabled="disabled || loading ? true : void 0"
     :class="{
-      [`er-button--${type}`]: type,// 根据 type 生成类型类，如 er-button--primary
-      [`er-button--${size}`]: size,// 根据 size 生成大小类，如 er-button--large
+      [`jo-button--${type}`]: type,// 根据 type 生成类型类，如 jo-button--primary
+      [`jo-button--${size}`]: size,// 根据 size 生成大小类，如 jo-button--large
       'is-plain': plain,// 朴素按钮
       'is-round': round,// 圆角按钮
       'is-circle': circle,// 圆形按钮
@@ -69,7 +69,7 @@ defineExpose<ButtonInstance>({
   >
     <template v-if="loading">
       <slot name="loading">
-        <er-icon
+        <jo-icon
           class="loading-icon"
           :icon="loadingIcon ?? 'spinner'"
           :style="iconStyle"
@@ -78,7 +78,7 @@ defineExpose<ButtonInstance>({
         />
       </slot>
     </template>
-    <er-icon
+    <jo-icon
       v-if="icon && !loading"
       :icon="icon"
       :style="iconStyle"

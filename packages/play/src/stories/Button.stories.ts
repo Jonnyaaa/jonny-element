@@ -2,13 +2,13 @@ import type { Meta, StoryObj, ArgTypes } from "@storybook/vue3"
 import { fn, within, userEvent, expect, clearAllMocks } from "@storybook/test"
 import { set } from "lodash-es";
 
-import { ErButton, ErButtonGroup } from "jonny-element"
+import { JoButton, JoButtonGroup } from "jonny-element"
 
-type Story = StoryObj<typeof ErButton> & { argTypes?: ArgTypes }
+type Story = StoryObj<typeof JoButton> & { argTypes?: ArgTypes }
 
-const meta:Meta< typeof ErButton> = {
-  title:"Example/Button",
-  component: ErButton,
+const meta: Meta<typeof JoButton> = {
+  title: "Example/Button",
+  component: JoButton,
   tags: ["autodocs"],
   argTypes: {
     type: {
@@ -69,12 +69,12 @@ export const Default: Story & { args: { content: string } } = {
     content: "Button",
   },
   render: (args) => ({
-    components: { ErButton },
+    components: { JoButton },
     setup() {
       return { args };
     },
     template: container(
-      `<er-button data-testid="story-test-btn" v-bind="args">{{args.content}}</er-button>`
+      `<jo-button data-testid="story-test-btn" v-bind="args">{{args.content}}</jo-button>`
     ),
   }),
 
@@ -141,14 +141,14 @@ export const Autofocus: Story & { args: { content: string } } = {
     autofocus: true,
   },
   render: (args) => ({
-    components: { ErButton },
+    components: { JoButton },
     setup() {
       return { args };
     },
     template: container(
       `
       <p>请点击浏览器的刷新页面来获取按钮聚焦</p>
-      <er-button data-testid="story-test-btn" v-bind="args">{{args.content}}</er-button>
+      <jo-button data-testid="story-test-btn" v-bind="args">{{args.content}}</jo-button>
       `
     ),
   }),
@@ -165,12 +165,12 @@ export const Circle: Story = {
     icon: "search",
   },
   render: (args) => ({
-    components: { ErButton },
+    components: { JoButton },
     setup() {
       return { args };
     },
     template: container(`
-      <er-button circle v-bind="args"/>
+      <jo-button circle v-bind="args"/>
     `),
   }),
   play: async ({ canvasElement, args, step }) => {
@@ -211,15 +211,15 @@ export const Group: Story & { args: { content1: string; content2: string } } = {
     content2: "Button2",
   },
   render: (args) => ({
-    components: { ErButton, ErButtonGroup },
+    components: { JoButton, JoButtonGroup },
     setup() {
       return { args };
     },
     template: container(`
-       <er-button-group :type="args.groupType" :size="args.groupSize" :disabled="args.groupDisabled">
-         <er-button v-bind="args">{{args.content1}}</er-button>
-         <er-button v-bind="args">{{args.content2}}</er-button>
-       </er-button-group>
+       <jo-button-group :type="args.groupType" :size="args.groupSize" :disabled="args.groupDisabled">
+         <jo-button v-bind="args">{{args.content1}}</jo-button>
+         <jo-button v-bind="args">{{args.content2}}</jo-button>
+       </jo-button-group>
     `),
   }),
   play: async ({ canvasElement, args, step }) => {

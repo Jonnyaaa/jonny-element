@@ -2,72 +2,80 @@
 
 :root {
   /* colors */
-  --er-color-white: #ffffff;
-  --er-color-black: #000000;
+  --jo-color-white: #ffffff;
+  --jo-color-black: #000000;
   --colors: (primary: #409eff, success: #67c23a, warning: #e6a23c, danger: #f56c6c, info: #909399);
-  --er-bg-color: #ffffff;
-  --er-bg-color-page: #f2f3f5;
-  --er-bg-color-overlay: #ffffff;
-  --er-text-color-primary: #303133;
-  --er-text-color-regular: #606266;
-  --er-text-color-secondary: #909399;
-  --er-text-color-placeholder: #a8abb2;
-  --er-text-color-disabled: #c0c4cc;
-  --er-border-color: #dcdfe6;
-  --er-border-color-light: #e4e7ed;
-  --er-border-color-lighter: #ebeef5;
-  --er-border-color-extra-light: #f2f6fc;
-  --er-border-color-dark: #d4d7de;
-  --er-border-color-darker: #cdd0d6;
-  --er-fill-color: #f0f2f5;
-  --er-fill-color-light: #f5f7fa;
-  --er-fill-color-lighter: #fafafa;
-  --er-fill-color-extra-light: #fafcff;
-  --er-fill-color-dark: #ebedf0;
-  --er-fill-color-darker: #e6e8eb;
-  --er-fill-color-blank: #ffffff;
+  --jo-bg-color: #ffffff;
+  --jo-bg-color-page: #f2f3f5;
+  --jo-bg-color-overlay: #ffffff;
+  --jo-text-color-primary: #303133;
+  --jo-text-color-regular: #606266;
+  --jo-text-color-secondary: #909399;
+  --jo-text-color-placeholder: #a8abb2;
+  --jo-text-color-disabled: #c0c4cc;
+  --jo-border-color: #dcdfe6;
+  --jo-border-color-light: #e4e7ed;
+  --jo-border-color-lighter: #ebeef5;
+  --jo-border-color-extra-light: #f2f6fc;
+  --jo-border-color-dark: #d4d7de;
+  --jo-border-color-darker: #cdd0d6;
+  --jo-fill-color: #f0f2f5;
+  --jo-fill-color-light: #f5f7fa;
+  --jo-fill-color-lighter: #fafafa;
+  --jo-fill-color-extra-light: #fafcff;
+  --jo-fill-color-dark: #ebedf0;
+  --jo-fill-color-darker: #e6e8eb;
+  --jo-fill-color-blank: #ffffff;
 
   @each $val, $color in var(--colors) {
-    --er-color-$(val): $(color);
-    @for $i from 3 to 9 {
-      --er-color-$(val)-light-$(i): mix(#fff, $(color),0.$(i));
-    }
-    --er-color-$(val)-dark-2: mix(#000, $(color), 0.2);
-  }
+    --jo-color-$(val): $(
+      color
+    );
 
-  /* border */
-  --er-border-width: 1px;
-  --er-border-style: solid;
-  --er-border-color-hover: var(--er-text-color-disabled);
-  --er-border: var(--er-border-width) var(--er-border-style) var(--er-border-color);
-  --er-border-radius-base: 4px;
-  --er-border-radius-small: 2px;
-  --er-border-radius-round: 20px;
-  --er-border-radius-circle: 100%;
+  @for $i from 3 to 9 {
+    --jo-color-$(val)-light-$(i): mix(#fff, $(
+        color),
+      0.$(
+      i)
+    );
+}
 
-  /*font*/
-  --er-font-size-extra-large: 20px;
-  --er-font-size-large: 18px;
-  --er-font-size-medium: 16px;
-  --er-font-size-base: 14px;
-  --er-font-size-small: 13px;
-  --er-font-size-extra-small: 12px;
-  --er-font-family: 'Helvetica Neue',
-  Helvetica,
-  'PingFang SC',
-  'Hiragino Sans GB',
-  'Microsoft YaHei',
-  '\5fae\8f6f\96c5\9ed1',
-  Arial,
-  sans-serif;
-  --er-font-weight-primary: 500;
+--jo-color-$(val)-dark-2: mix(#000, $(color), 0.2);
+}
 
-  /*disabled*/
-  --er-disabled-bg-color: var(--er-fill-color-light);
-  --er-disabled-text-color: var(--er-text-color-placeholder);
-  --er-disabled-border-color: var(--er-border-color-light);
+/* border */
+--jo-border-width: 1px;
+--jo-border-style: solid;
+--jo-border-color-hover: var(--jo-text-color-disabled);
+--jo-border: var(--jo-border-width) var(--jo-border-style) var(--jo-border-color);
+--jo-border-radius-base: 4px;
+--jo-border-radius-small: 2px;
+--jo-border-radius-round: 20px;
+--jo-border-radius-circle: 100%;
 
-  /*animation*/
-  --er-transition-duration: 0.4s;
-  --er-transition-duration-fast: 0.2s;
-  }
+/*font*/
+--jo-font-size-extra-large: 20px;
+--jo-font-size-large: 18px;
+--jo-font-size-medium: 16px;
+--jo-font-size-base: 14px;
+--jo-font-size-small: 13px;
+--jo-font-size-extra-small: 12px;
+--jo-font-family: 'Helvetica Neue',
+Helvetica,
+'PingFang SC',
+'Hiragino Sans GB',
+'Microsoft YaHei',
+'\5fae\8f6f\96c5\9ed1',
+Arial,
+sans-serif;
+--jo-font-weight-primary: 500;
+
+/*disabled*/
+--jo-disabled-bg-color: var(--jo-fill-color-light);
+--jo-disabled-text-color: var(--jo-text-color-placeholder);
+--jo-disabled-border-color: var(--jo-border-color-light);
+
+/*animation*/
+--jo-transition-duration: 0.4s;
+--jo-transition-duration-fast: 0.2s;
+}

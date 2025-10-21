@@ -5,7 +5,7 @@ import { omit } from "lodash-es";
 import { computed } from "vue";
 
 defineOptions({
-  name: "ErIcon",
+  name: "JoIcon",
   inheritAttrs: false,// 避免父组件传递的 class、style 等属性直接绑定到最外层 <i>，改为手动处理
 });
 
@@ -17,8 +17,8 @@ const customStyles = computed(() => ({ color: props.color ?? void 0 }));// 用�
 
 <template>
   <i
-    class="er-icon"
-    :class="[`er-icon-${props.type}`]"
+    class="jo-icon"
+    :class="[`jo-icon-${props.type}`]"
     :style="customStyles"
     v-bind="$attrs"
   >

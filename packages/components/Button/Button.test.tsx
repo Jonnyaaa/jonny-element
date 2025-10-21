@@ -13,7 +13,7 @@ describe("Button.vue", () => {
       const wrapper = mount(Button, {
         props: { type: type as any },
       });
-      expect(wrapper.classes()).toContain(`er-button--${type}`);
+      expect(wrapper.classes()).toContain(`jo-button--${type}`);
     });
   });
 
@@ -24,7 +24,7 @@ describe("Button.vue", () => {
       const wrapper = mount(Button, {
         props: { size: size as any },
       });
-      expect(wrapper.classes()).toContain(`er-button--${size}`);
+      expect(wrapper.classes()).toContain(`jo-button--${size}`);
     });
   });
 
@@ -41,7 +41,7 @@ describe("Button.vue", () => {
       const wrapper = mount(Button, {
         props: { [prop]: true },
         global: {
-          stubs: ["ErIcon"],
+          stubs: ["JoIcon"],
         },
       });
       expect(wrapper.classes()).toContain(className);
@@ -98,7 +98,7 @@ describe("Button.vue", () => {
     const wrapper = mount(Button, {
       props: { loading: true },
       global: {
-        stubs: ["ErIcon"],
+        stubs: ["JoIcon"],
       },
     });
     const iconElement = wrapper.findComponent(Icon);
@@ -120,7 +120,7 @@ describe("Button.vue", () => {
     ));
 
     // class
-    expect(wrapper.classes()).toContain("er-button--primary");
+    expect(wrapper.classes()).toContain("jo-button--primary");
 
     // slot
     expect(wrapper.get("button").text()).toBe("button content");
@@ -159,7 +159,7 @@ describe("Button.vue", () => {
         default: "loading button",
       },
       global: {
-        stubs: ["ErIcon"],
+        stubs: ["JoIcon"],
       },
     });
 
@@ -189,7 +189,7 @@ describe("Button.vue", () => {
         default: "icon button",
       },
       global: {
-        stubs: ["ErIcon"],
+        stubs: ["JoIcon"],
       },
     });
 
@@ -209,7 +209,7 @@ describe("ButtonGroup.vue", () => {
       </ButtonGroup>
     ));
 
-    expect(wrapper.classes()).toContain("er-button-group");
+    expect(wrapper.classes()).toContain("jo-button-group");
   });
 
   test("button group size", () => {
@@ -223,7 +223,7 @@ describe("ButtonGroup.vue", () => {
       ));
 
       const buttonWrapper = wrapper.findComponent(Button);
-      expect(buttonWrapper.classes()).toContain(`er-button--${size}`);
+      expect(buttonWrapper.classes()).toContain(`jo-button--${size}`);
     });
   });
 
@@ -238,7 +238,7 @@ describe("ButtonGroup.vue", () => {
       ));
 
       const buttonWrapper = wrapper.findComponent(Button);
-      expect(buttonWrapper.classes()).toContain(`er-button--${type}`);
+      expect(buttonWrapper.classes()).toContain(`jo-button--${type}`);
     });
   });
 
