@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "pnpm --filter @jonny-element/play dev",
-    "story": "pnpm --filter @jonny-element/play storybook",
+    "story": "pnpm --filter jonny-element build && pnpm --filter @jonny-element/play storybook",
     "docs:dev": "pnpm --filter @jonny-element/docs dev",
     "docs:build": "pnpm --filter @jonny-element/docs build",
     "test": "pnpm --filter @jonny-element/components test",
