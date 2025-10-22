@@ -2,10 +2,13 @@ import { makeInstaller } from "@jonny-element/utils";//工具函数，用于批�
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import components from "./components";// 从当前目录下的 ./components 导入组件集合（通常是一个数组，包含所有需要全局注册的组件）
+import printLogo from "./printLogo";
 import '@jonny-element/theme/index.css';// 导入主题样式
+
+printLogo();
 
 library.add(fas);// 将所有的 free-solid-svg-icons 图标添加到 FontAwesome 的图标库中
 const installer = makeInstaller(components);// 使用工具函数将组件集合转换为安装器
 
-export * from "../components";// 导出所有组件，供外部使用
+export * from "@jonny-element/components";// 导出所有组件，供外部使用
 export default installer;// 默认导出安装器，供 Vue 应用使用

@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/vue3";
 import { JoCollapse, JoCollapseItem } from "jonny-element";
+import 'jonny-element/dist/theme/Collapse.css'
+
 
 type Story = StoryObj<typeof JoCollapse>;
 

@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "dev": "pnpm --filter @jonny-element/play dev",
-    "story": "pnpm --filter jonny-element build && pnpm --filter @jonny-element/play storybook",
+    "story": "pnpm --filter @jonny-element/play storybook",
     "docs:dev": "pnpm --filter @jonny-element/docs dev",
     "docs:build": "pnpm --filter @jonny-element/docs build",
-    "test": "pnpm --filter @jonny-element/components test",
-    "build": "pnpm --filter jonny-element build"
+    "test": "cross-env NODE_ENV=test pnpm --filter @jonny-element/components test",
+    "build": "cross-env NODE_ENV=production pnpm --filter jonny-element build",
+    "build:dev": "cross-env NODE_ENV=development pnpm --filter jonny-element build:watch"
   },
   "keywords": [],
   "author": "",
@@ -22,10 +23,12 @@
     "@popperjs/core": "^2.11.8",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^20.19.11",
+    "@types/shelljs": "^0.8.17",
     "@vitejs/plugin-vue": "^5.2.4",
     "@vitejs/plugin-vue-jsx": "^3.1.0",
     "@vue/tsconfig": "^0.5.1",
     "async-validator": "^4.2.5",
+    "cross-env": "^10.1.0",
     "move-file-cli": "^3.0.0",
     "npm-run-all": "^4.1.5",
     "postcss-color-mix": "^1.1.0",
@@ -34,7 +37,7 @@
     "postcss-for": "^2.1.1",
     "postcss-nested": "^6.2.0",
     "release-it": "^19.0.5",
-    "rimraf": "^6.0.1",
+    "shelljs": "^0.10.0",
     "typescript": "^5.8.3",
     "vite": "^5.4.19",
     "vitest": "^1.6.1",
@@ -44,8 +47,8 @@
     "@jonny-element/hooks": "workspace:*",
     "@jonny-element/theme": "workspace:*",
     "@jonny-element/utils": "workspace:*",
-    "lodash-es": "^4.17.21",
     "jonny-element": "workspace:*",
+    "lodash-es": "^4.17.21",
     "vue": "^3.5.20"
   }
 }

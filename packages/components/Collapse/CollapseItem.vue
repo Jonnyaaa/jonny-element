@@ -3,6 +3,7 @@ import type { CollapseItemProps } from './types';
 import { inject, computed } from 'vue';
 import { COLLAPSE_CTX_KEY } from './constants';
 import JoIcon from '../Icon/Icon.vue'
+import transitionEvents from './transitionEvents';
 
 defineOptions({
   name: "JoCollapseItem"
@@ -46,11 +47,13 @@ function handleClick() {
       <jo-icon icon="angle-right" class="header-angle" />
     </div>
     <!-- 内容区域（仅在展开状态显示） -->
-    <div class="jo-collapse-item__wapper" v-show="isActive">
-      <div class="jo-collapse-item__content" :id="`item-content-${name}`">
-        <slot></slot>
+    <transition name="slide" v-on="transitionEvents">
+      <div class="jo-collapse-item__wapper" v-show="isActive">
+        <div class="jo-collapse-item__content" :id="`item-content-${name}`">
+          <slot></slot>
+        </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 

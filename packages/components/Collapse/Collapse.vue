@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import type { CollapseProps, CollapseEmits, CollapseItemName } from './types';
-import { ref, provide, watch } from 'vue';
+import { ref, provide, watch, watchEffect } from 'vue';
+import { debugWarn } from '@jonny-element/utils';
 import { COLLAPSE_CTX_KEY } from './constants';
+
+const COPM_NAME = 'JoCollapse' as const // as const将其锁定为具体的字符串字面量
 
 // 指定组件名称
 defineOptions({
-  name: "JoCollapse",
+  name: COPM_NAME,
 });
 const props = defineProps<CollapseProps>();// 声明组件接收的属性
 const emits = defineEmits<CollapseEmits>();// 声明组件触发的事件
 const activeNames = ref(props.modelValue);
-
-if (props.accordion && activeNames.value.length > 1) {
-  console.warn("accordion mode should only have one active item");
-}
 
 // 处理子项点击事件（供子组件调用）
 function handleItemClick(item: CollapseItemName){
@@ -48,6 +47,14 @@ function updateActiveNames(newNames: CollapseItemName[]) {
   emits("update:modelValue", newNames); // 触发 v-model 双向绑定更新
   emits("change", newNames); // 触发 change 事件，通知父组件状态变化
 }
+
+// 自动追踪依赖并在依赖变化时执行校验逻辑
+// 确保 “手风琴模式下最多只能有一个展开项” 的约束在任何相关状态变化时都能被检查到
+watchEffect(() => {
+  if (props.accordion && activeNames.value.length > 1) {
+    debugWarn(COPM_NAME, "accordion mode should only have one active item")
+  }
+})
 
 // 监听父组件传入的状态变化
 watch(

@@ -1,11 +1,58 @@
 import { defineConfig } from "vite";
+import { readFileSync } from "fs";
+import { resolve } from "path";
+import { delay } from "lodash-es";
+import { compression } from "vite-plugin-compression2";
+
+import shell from "shelljs";
 import vue from "@vitejs/plugin-vue"
-// 导入Node.js的path模块，用于处理文件路径（解决不同系统路径格式差异）
-import { resolve } from "path"
+import hooks from "./hooksPlugin";
+import terser from "@rollup/plugin-terser"
+
+const TRY_MOVE_STYLES_DELAY = 800 as const;
+
+// 定义环境变量标识（区分开发/生产/测试环境）
+const isProd = process.env.NODE_ENV === "production";
+const isDev = process.env.NODE_ENV === "development";
+const isTest = process.env.NODE_ENV === "test";
+
+function moveStyles() {
+  try {
+    // 检查压缩后的 CSS 文件是否存在（标志 CSS 构建完成）
+    readFileSync("./dist/umd/index.css.gz");
+    // 将 UMD 目录下的 index.css 复制到 dist 根目录
+    shell.cp("./dist/umd/index.css", "./dist/index.css");
+  } catch (_) {
+    // 如果文件不存在（构建未完成），延迟后重试，避免因异步操作导致的文件未就绪问题
+    delay(moveStyles, TRY_MOVE_STYLES_DELAY);
+  }
+}
 
 export default defineConfig({
   // 配置Vite插件
-  plugins: [vue()],// 注册Vue插件，必须配置，否则无法解析.vue文件中的template/script/style
+  plugins: [
+    vue(),
+    // 注册Vue插件，必须配置，否则无法解析.vue文件中的template/script/style
+    compression({ // 注册压缩插件，对指定资源进行压缩
+      include: /.(cjs|css)$/i, // 仅压缩以 .cjs 结尾的 CommonJS 模块文件和以 .css 结尾的样式文件
+    }),
+    terser({
+      compress: {
+        drop_console: ["log"], // 移除 console.log（保留其他 console 方法如 warn/error）
+        drop_debugger: true, // 移除 debugger 语句（无论环境）
+        passes: 3, // 压缩轮次（3次深度压缩，优化更彻底）
+        global_defs: { // 注入全局变量（编译时替换）
+          "@DEV": JSON.stringify(isDev),
+          "@PROD": JSON.stringify(isProd),
+          "@TEST": JSON.stringify(isTest),
+        },
+      },
+    }),
+    hooks({
+      rmFiles: ['./dist/umd', './dist/index.css'], // 构建前清理旧文件
+      afterBuild: moveStyles, // 构建完成后执行 moveStyles 函数
+    })
+  ],
 
   // 构建相关配置（打包时生效）
   build: {

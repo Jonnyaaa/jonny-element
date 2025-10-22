@@ -1,9 +1,8 @@
-// import type { Preview } from '@storybook/vue3-vite'
-import "jonny-element/dist/index.css"
+import "jonny-element/dist/theme/index.css"
 
 /** @type { import('@storybook/vue3').Preview } */
 
-const preview: Preview = {
+const preview = {
   parameters: {
     controls: {
       matchers: {

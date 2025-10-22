@@ -3,6 +3,7 @@ import { fn, within, userEvent, expect, clearAllMocks } from "@storybook/test"
 import { set } from "lodash-es";
 
 import { JoButton, JoButtonGroup } from "jonny-element"
+import 'jonny-element/dist/theme/Button.css'
 
 type Story = StoryObj<typeof JoButton> & { argTypes?: ArgTypes }
 
