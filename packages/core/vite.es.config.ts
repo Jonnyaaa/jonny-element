@@ -41,7 +41,7 @@ export default defineConfig({
   // 配置Vite插件
   plugins: [
     vue(),
-     // 注册Vue插件，必须配置，否则无法解析.vue文件中的template/script/style
+    // 注册Vue插件，必须配置，否则无法解析.vue文件中的template/script/style
     // 配置dts插件，用于生成类型声明文件
     dts({
       tsconfigPath: "../../tsconfig.build.json",// 指定TS配置文件路径，插件会根据该配置生成类型
@@ -125,7 +125,7 @@ export default defineConfig({
           if (
             assetInfo.type === "asset" && // 确认是静态资源（非 chunk 代码）
             /\.(css)$/i.test(assetInfo.name as string)  // 文件名匹配 .css（忽略大小写）
-          ){
+          ) {
             return 'theme/[name].[ext]' // 输出路径：theme/原文件名.原后缀
           }
           return assetInfo.name as string
@@ -147,7 +147,7 @@ export default defineConfig({
           if (
             id.includes("/packages/utils") ||
             id.includes("plugin-vue:export-helper")
-            ) {
+          ) {
             return "utils";
           }
           // 4. 每个组件单独拆分为独立的 chunk（按组件名）

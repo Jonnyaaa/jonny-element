@@ -1,4 +1,4 @@
-import Collapse from "./Collapse.vue"; 
+import Collapse from "./Collapse.vue";
 import CollapseItem from "./CollapseItem.vue";
 import { withInstall } from "@jonny-element/utils";
 

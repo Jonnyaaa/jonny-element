@@ -24,6 +24,6 @@ font-weight: 600;
 
     console.info(`%c${logo}`, rainbowGradient);
   } else if (DEV) {
-    console.log("[EricUI]:dev mode...");
+    console.log("[JonnyUI]:dev mode...");
   }
 }
