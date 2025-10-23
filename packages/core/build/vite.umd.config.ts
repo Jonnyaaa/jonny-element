@@ -1,8 +1,9 @@
 import { defineConfig } from "vite";
-import { readFileSync } from "fs";
+import { readFile } from "fs";
 import { resolve } from "path";
-import { delay } from "lodash-es";
+import { delay, defer } from "lodash-es";
 import { compression } from "vite-plugin-compression2";
+import { visualizer } from 'rollup-plugin-visualizer';
 
 import shell from "shelljs";
 import vue from "@vitejs/plugin-vue"
@@ -17,15 +18,11 @@ const isDev = process.env.NODE_ENV === "development";
 const isTest = process.env.NODE_ENV === "test";
 
 function moveStyles() {
-  try {
-    // 检查压缩后的 CSS 文件是否存在（标志 CSS 构建完成）
-    readFileSync("./dist/umd/index.css.gz");
-    // 将 UMD 目录下的 index.css 复制到 dist 根目录
-    shell.cp("./dist/umd/index.css", "./dist/index.css");
-  } catch (_) {
-    // 如果文件不存在（构建未完成），延迟后重试，避免因异步操作导致的文件未就绪问题
-    delay(moveStyles, TRY_MOVE_STYLES_DELAY);
-  }
+  readFile('./dist/umd/index.css.gz', err => {
+    // 检查 UMD 目录下的 index.css.gz（压缩后的 CSS）是否存在
+    if (err) return delay(moveStyles, TRY_MOVE_STYLES_DELAY) // 不存在则延迟重试
+    defer(() => shell.cp('./dist/umd/index.css', './dist/index.css')) // 存在则复制 CSS 到 dist 根目录
+  })
 }
 
 export default defineConfig({
@@ -33,6 +30,9 @@ export default defineConfig({
   plugins: [
     vue(),
     // 注册Vue插件，必须配置，否则无法解析.vue文件中的template/script/style
+    visualizer({
+      filename: 'dist/stats.umd.html'
+    }),
     compression({ // 注册压缩插件，对指定资源进行压缩
       include: /.(cjs|css)$/i, // 仅压缩以 .cjs 结尾的 CommonJS 模块文件和以 .css 结尾的样式文件
     }),
@@ -62,7 +62,7 @@ export default defineConfig({
     // 库模式配置（核心！用于组件库打包，而非普通应用打包）
     lib: {
       // 组件库入口文件路径：__dirname是当前文件所在目录，resolve拼接为绝对路径
-      entry: resolve(__dirname, "./index.ts"),
+      entry: resolve(__dirname, "../index.ts"),
 
       // 全局变量名称：当用户通过<script>标签直接引入时，会在window上挂载该变量
       name: "JonnyElement",

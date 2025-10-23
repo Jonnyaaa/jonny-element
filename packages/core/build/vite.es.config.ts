@@ -1,8 +1,10 @@
 import { defineConfig } from "vite";
 // 导入Node.js的path模块，用于处理文件路径（解决不同系统路径格式差异）
 import { resolve } from "path";
-import { readdirSync } from "fs";// Node.js文件系统模块，用于读取目录
-import { delay, filter, map } from "lodash-es";
+import { readdirSync, readdir } from "fs";// Node.js文件系统模块，用于读取目录
+import { delay, defer, filter, map } from "lodash-es";
+import { visualizer } from 'rollup-plugin-visualizer';
+
 import vue from "@vitejs/plugin-vue";
 // 导入vite-plugin-dts插件，用于在打包时自动生成TypeScript类型声明文件（.d.ts）
 import dts from "vite-plugin-dts";
@@ -29,12 +31,12 @@ function getDirectoriesSync(basePath: string) {
 }
 
 function moveStyles() {
-  try {
-    readdirSync("./dist/es/theme"); // 检查 dist/es/theme 目录是否存在
-    shell.mv("./dist/es/theme", "./dist"); // 移动目录到 dist 根目录
-  } catch (_) {
-    delay(moveStyles, TRY_MOVE_STYLES_DELAY);
-  }
+  readdir('./dist/es/theme', err => {
+    // 如果目录不存在（可能打包未完成），延迟重试
+    if (err) return delay(moveStyles, TRY_MOVE_STYLES_DELAY)
+    // 延迟执行移动命令，确保文件生成完成
+    defer(() => shell.mv('./dist/es/theme', './dist'))
+  })
 }
 
 export default defineConfig({
@@ -43,6 +45,9 @@ export default defineConfig({
     vue(),
     // 注册Vue插件，必须配置，否则无法解析.vue文件中的template/script/style
     // 配置dts插件，用于生成类型声明文件
+    visualizer({
+      filename: 'dist/stats.es.html' // 输出分析报告的路径和文件名
+    }),
     dts({
       tsconfigPath: "../../tsconfig.build.json",// 指定TS配置文件路径，插件会根据该配置生成类型
       outDir: "dist/types",// 类型声明文件的输出目录，最终会在dist/types下生成.d.ts文件
@@ -92,7 +97,7 @@ export default defineConfig({
     // 库模式配置（核心！用于组件库打包，而非普通应用打包）
     lib: {
       // 组件库入口文件路径：__dirname是当前文件所在目录，resolve拼接为绝对路径
-      entry: resolve(__dirname, "./index.ts"),
+      entry: resolve(__dirname, "../index.ts"),
 
       // 全局变量名称：当用户通过<script>标签直接引入时，会在window上挂载该变量
       name: "JonnyElement",
