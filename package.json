@@ -10,7 +10,8 @@
     "docs:build": "pnpm --filter @jonny-element/docs build",
     "test": "cross-env NODE_ENV=test pnpm --filter @jonny-element/components test",
     "build": "cross-env NODE_ENV=production pnpm --filter jonny-element build",
-    "build:dev": "cross-env NODE_ENV=development pnpm --filter jonny-element build:watch"
+    "build:dev": "cross-env NODE_ENV=development pnpm --filter jonny-element build:watch",
+    "release": "pnpm --filter jonny-element release"
   },
   "keywords": [],
   "author": "",
