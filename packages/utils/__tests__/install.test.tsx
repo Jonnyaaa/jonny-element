@@ -32,13 +32,13 @@ describe('install', () => {
     // 创建 Vue 应用实例，并注册 compA、compB，最后挂载到测试容器
     const app = createApp(AppComp)
 
-    app.use(compA).use(compB).mount(wrapper.element)
+    app.use(compA).mount(wrapper.element)
 
     // 断言验证
     expect(compA.install).toBeDefined()
     expect(compB.install).toBeDefined()
-    expect(wrapper.findComponent(compA)).toBeTruthy() // 验证 compA 能被找到（已注册）
-    expect(wrapper.findComponent(compB)).toBeTruthy()
+    expect(app._context.components['CompA']).toBeTruthy() // 验证 compA 能被找到（已注册）
+    expect(app._context.components['CompB']).toBeFalsy()
   })
 
   it('makeInstaller should be worked', () => {
