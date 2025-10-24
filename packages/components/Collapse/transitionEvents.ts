@@ -1,8 +1,7 @@
 // 将元素的 height 样式设为 0px（折叠状态的初始高度）
 const _setHeightZero = (el: HTMLElement) => (el.style.height = "0px");
 // 将元素的 height 样式设为其内容实际高度（scrollHeight 是元素内容的总高度，包括溢出部分），用于展开时的目标高度
-const _setHeightScroll = (el: HTMLElement) =>
-  (el.style.height = `${el.scrollHeight}px`);
+const _setHeightScroll = (el: HTMLElement) => (el.style.height = `${el.scrollHeight}px`);
 // 清空元素的 height 样式（恢复为默认的 auto），避免固定高度影响后续内容变化（如内容动态更新时）
 const _setHeightEmpty = (el: HTMLElement) => (el.style.height = "");
 // 将元素的 overflow 设为 hidden，避免展开 / 折叠过程中内容溢出（如滚动条闪烁）
