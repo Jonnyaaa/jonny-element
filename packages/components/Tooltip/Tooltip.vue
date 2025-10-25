@@ -34,7 +34,7 @@ const triggerNode = ref<HTMLElement>() // 触发节点（绑定事件的元素�
 
 // 计算Popper.js的配置项（合并默认配置和用户传入的配置）
 const popperOptions = computed(() => ({
-  placements: props.placement, // 定位方向
+  placement: props.placement, // 定位方向
   modifiers: [
     {
       name: "offset", // 偏移修饰符
@@ -214,12 +214,12 @@ defineExpose<TooltipInstance>({
       class="jo-tooltip__trigger"
       ref="triggerNode"
       v-on="events"
-      v-if="!virtualTriggering"
+      
     >
       <slot></slot><!-- 触发元素的内容（默认插槽） -->
     </div>
     <!-- 虚拟触发时显示的插槽（用于自定义触发逻辑） -->
-    <slot name="default" v-else></slot>
+    <!-- <slot name="default" v-else></slot> -->
 
     <!-- 弹窗过渡动画：离开后销毁Popper实例 -->
     <transition :name="transition" @after-leave="destroyPopperInstance">
@@ -240,3 +240,7 @@ defineExpose<TooltipInstance>({
     </transition>
   </div>
 </template>
+
+<style scoped>
+@import "./style.css";
+</style>
