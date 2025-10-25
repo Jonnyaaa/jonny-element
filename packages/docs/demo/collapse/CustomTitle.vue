@@ -8,7 +8,7 @@ const activeNames = ref(['1'])
   <jo-collapse v-model="activeNames" accordion>
     <jo-collapse-item name="1">
       <template #title>
-        <span style="color: var(--er-color-danger)"> Consistency </span>
+        <span style="color: var(--jo-color-danger)"> Consistency </span>
         <jo-icon icon="question-circle" />
       </template>
       <div>

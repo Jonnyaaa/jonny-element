@@ -55,6 +55,25 @@ const closeDelay = computed(() =>
   props.trigger === "hover" ? props.hideTimeout : 0
 )
 
+// 创建一个映射表（Map），用于存储不同触发方式对应的事件绑定策略
+const triggerStrategyMap: Map<string, () => void> = new Map();
+
+// 为"hover"触发方式注册策略：鼠标悬浮时的事件绑定逻辑
+triggerStrategyMap.set("hover", () => {
+  events.value["mouseenter"] = openFinal;
+  outerEvents.value["mouseleave"] = closeFinal;
+  dropdownEvents.value["mouseenter"] = openFinal;
+});
+triggerStrategyMap.set("click", () => {
+  events.value["click"] = togglePopper;
+});
+triggerStrategyMap.set("contextmenu", () => {
+  events.value["contextmenu"] = (e) => {
+    e.preventDefault();
+    openFinal();
+  };
+});
+
 // 声明防抖函数变量（用于控制显示/隐藏的延迟执行）
 let openDebounce: DebouncedFunc<() => void> | void
 let closeDebounce: DebouncedFunc<() => void> | void
@@ -86,28 +105,7 @@ function setVisible(val: boolean) {
 function attachEvents() {
   if (props.disabled || props.manual) return; // 禁用或手动控制时不自动绑定事件
 
-  // 悬浮触发（hover）
-  if (props.trigger === "hover") {
-    events.value["mouseenter"] = openFinal; // 鼠标进入触发元素：准备显示
-    outerEvents.value["mouseleave"] = closeFinal;
-    dropdownEvents.value["mouseenter"] = openFinal;
-    return;
-  }
-
-  // 点击触发（click）
-  if (props.trigger === "click") {
-    events.value["click"] = togglePopper;
-    return;
-  }
-
-  // 右键触发（contextmenu）
-  if (props.trigger === "contextmenu") {
-    events.value["contextmenu"] = (e) => {
-      e.preventDefault(); // 阻止默认右键菜单
-      openFinal(); // 显示Tooltip
-    };
-    return;
-  }
+  triggerStrategyMap.get(props.trigger)?.();
 }
 
 // Popper实例（用于管理弹窗定位）
@@ -149,7 +147,6 @@ watch(
         popperNode.value, // 浮动元素（弹窗节点）
         popperOptions.value // 配置项
       );
-      console.log(popperInstance)
     }
   },
   { flush: "post" } // 确保DOM更新后执行（避免节点未渲染）
@@ -199,7 +196,6 @@ useClickOutside(containerNode, () => {
 
 // 组件卸载时清理Popper实例
 onUnmounted(() => {
-  console.log("unmount",popperInstance);
   destroyPopperInstance();
 })
 
