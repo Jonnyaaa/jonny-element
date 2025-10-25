@@ -9,7 +9,7 @@ import vue from "@vitejs/plugin-vue";
 // 导入vite-plugin-dts插件，用于在打包时自动生成TypeScript类型声明文件（.d.ts）
 import dts from "vite-plugin-dts";
 import shell from "shelljs";
-import hooks from "./hooksPlugin";
+import { hooksPlugin as hooks } from "@jonny-element/vite-plugins";
 import terser from "@rollup/plugin-terser" // 导入代码压缩插件
 
 const TRY_MOVE_STYLES_DELAY = 800 as const;

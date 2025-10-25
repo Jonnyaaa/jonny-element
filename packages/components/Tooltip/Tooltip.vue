@@ -5,12 +5,21 @@ import { bind, debounce, isNil, type DebouncedFunc } from 'lodash-es'; // 工具
 import { computed, ref, watch, watchEffect, onUnmounted, type Ref } from 'vue'
 import { useClickOutside } from '@jonny-element/hooks' // 自定义钩子：监听点击外部事件
 
+import useEvenstToTiggerNode from './useEventsToTiggerNode';
+
+// 继承原始 TooltipProps 接口，并新增虚拟触发相关属性
+interface _TooltipProps extends TooltipProps {
+  virtualRef?: HTMLElement | void // 虚拟触发的定位参考节点
+  virtualTriggering?: boolean // 虚拟触发模式开关
+}
+
 defineOptions({
   name: "JoTooltip"
 })
 
 // 定义组件属性（Props），并设置默认值
-const props = withDefaults(defineProps<TooltipProps>(), {
+// 使用扩展后的 _TooltipProps 接口，同时支持原始属性和虚拟触发属性
+const props = withDefaults(defineProps<_TooltipProps>(), {
   placement: "bottom", // 默认定位方向：底部
   trigger: "hover", // 默认触发方式：鼠标悬浮
   transition: "fade", // 默认过渡动画：淡入淡出
@@ -30,7 +39,18 @@ const dropdownEvents: Ref<Record<string, EventListener>> = ref({}) // 弹窗元�
 // 元素引用（用于获取DOM节点）
 const containerNode = ref<HTMLElement>() // 容器节点
 const popperNode = ref<HTMLElement>() // 弹窗节点（Tooltip内容）
-const triggerNode = ref<HTMLElement>() // 触发节点（绑定事件的元素）
+const _triggerNode = ref<HTMLElement>() // 触发节点（绑定事件的元素）
+
+// 动态返回当前生效的「触发/定位参考节点」
+const triggerNode = computed(() => {
+  if(props.virtualTriggering) {
+    // 优先使用用户通过 props.virtualRef 传入的自定义定位节点
+    // 若用户未提供 virtualRef 或无效，则降级使用内置的真实触发节点 _triggerNode
+    return (props.virtualRef as HTMLElement) ?? _triggerNode.value
+  }
+  // 若未启用虚拟触发模式，直接返回内置的真实触发节点（断言为 HTMLElement 确保类型安全）
+  return _triggerNode.value as HTMLElement
+})
 
 // 计算Popper.js的配置项（合并默认配置和用户传入的配置）
 const popperOptions = computed(() => ({
@@ -194,6 +214,11 @@ useClickOutside(containerNode, () => {
   visible.value && closeFinal(); // 显示状态时执行隐藏
 })
 
+useEvenstToTiggerNode(props, triggerNode, events, () => {
+  openDebounce?.cancel()
+  setVisible(false)
+})
+
 // 组件卸载时清理Popper实例
 onUnmounted(() => {
   destroyPopperInstance();
@@ -212,14 +237,14 @@ defineExpose<TooltipInstance>({
     <!-- 触发节点：非虚拟触发时显示，绑定触发事件 -->
     <div
       class="jo-tooltip__trigger"
-      ref="triggerNode"
+      ref="_triggerNode"
       v-on="events"
-      
+      v-if="!virtualTriggering"
     >
       <slot></slot><!-- 触发元素的内容（默认插槽） -->
     </div>
     <!-- 虚拟触发时显示的插槽（用于自定义触发逻辑） -->
-    <!-- <slot name="default" v-else></slot> -->
+    <slot name="default" v-else></slot>
 
     <!-- 弹窗过渡动画：离开后销毁Popper实例 -->
     <transition :name="transition" @after-leave="destroyPopperInstance">

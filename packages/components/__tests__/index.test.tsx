@@ -9,6 +9,7 @@ import {
   JoCollapse, 
   JoCollapseItem, 
   JoAlert,
+  JoTooltip
 } from "..";
 
 import { get, map } from "lodash-es"
@@ -22,6 +23,7 @@ const comps = [
   JoCollapse,
   JoCollapseItem,
   JoAlert,
+  JoTooltip
  ] as Plugin[];
 
  describe("components/index", () => {
