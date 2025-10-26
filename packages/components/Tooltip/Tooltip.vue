@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TooltipProps, TooltipEmits, TooltipInstance } from './types';
 import { createPopper, type Instance } from "@popperjs/core"; // 导入Popper.js用于定位
-import { bind, debounce, isNil, type DebouncedFunc } from 'lodash-es'; // 工具函数：防抖、绑定上下文等
+import { bind, debounce, type DebouncedFunc } from 'lodash-es'; // 工具函数：防抖、绑定上下文等
 import { computed, ref, watch, watchEffect, onUnmounted, type Ref } from 'vue'
 import { useClickOutside } from '@jonny-element/hooks' // 自定义钩子：监听点击外部事件
 
@@ -133,9 +133,7 @@ let popperInstance: null | Instance;
 
 // 销毁Popper实例（清理定位逻辑）
 function destroyPopperInstance() {
-  if (isNil(popperInstance)) return;
-
-  popperInstance.destroy(); // 销毁实例
+  popperInstance?.destroy(); // 销毁实例
   popperInstance = null;
 }
 
@@ -187,8 +185,7 @@ watch(
 // 监听trigger属性变化：触发方式改变时重置状态和事件
 watch(
   () => props.trigger,
-  (val, oldVal) => {
-    if (val === oldVal) return;
+  () => {
     openDebounce?.cancel();
     visible.value = false; // 重置显示状态
     emits("visible-change", false); // 触发状态变化事件
