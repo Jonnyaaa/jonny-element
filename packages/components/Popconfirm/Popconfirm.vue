@@ -51,10 +51,10 @@ function cancel(e: MouseEvent) {
           {{ title }}
         </div>
         <div class="jo-popconfirm__action">
-          <jo-button size="small" :type="cancelButtonType" @click="cancel">
+          <jo-button class="jo-popconfirm__cancel"  size="small" :type="cancelButtonType" @click="cancel">
             {{ cancelButtonText }}
           </jo-button>
-          <jo-button size="small" :type="confirmButtonType" @click="confrim">
+          <jo-button class="jo-popconfirm__confirm"  size="small" :type="confirmButtonType" @click="confrim">
             {{ confirmButtonText }}
           </jo-button>
         </div>
