@@ -10,6 +10,7 @@ import type {
   DropdownInstance,
   DropdownContext,
 } from "./types";
+import { useDisabledStyle } from "@jonny-element/hooks";
 
 import { DROPDOWN_CTX_KEY } from "./constants";
 
@@ -31,9 +32,6 @@ const slots = defineSlots();
 const tooltipRef = ref<TooltipInstance>();
 const triggerRef = ref<ButtonInstance>();
 
-// 分割按钮模式下，Tooltip 的虚拟触发元素
-const virtualRef = computed(() => triggerRef.value?.ref ?? void 0);
-
 // 过滤传递给 JoTooltip 的 Props（排除 Dropdown 自身的 Props）
 const tooltipProps = computed(() =>
   omit(props, ["items", "hideAfterClick", "size", "type", "splitButton"])
@@ -47,6 +45,7 @@ function handleItemClick(e: DropdownItemProps) {
   !isNil(e.command) && emits("command", e.command);
 }
 
+!TEST && useDisabledStyle();
 // 向子组件注入上下文（方法和状态）
 provide<DropdownContext>(DROPDOWN_CTX_KEY, {
   handleItemClick,
@@ -65,7 +64,7 @@ defineExpose<DropdownInstance>({
       ref="tooltipRef"
       v-bind="tooltipProps"
       :virtual-triggering="splitButton"
-      :virtual-ref="virtualRef?.value"
+      :virtual-ref="triggerRef?.ref.value"
       @visible-change="$emit('visible-change', $event)"
     >
       <jo-button-group

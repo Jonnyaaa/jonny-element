@@ -4,3 +4,5 @@ import { withInstall } from '@jonny-element/utils'
 
 export const JoDropdown = withInstall(Dropdown)
 export const JoDropdownItem = withInstall(DropdownItem)
+
+export * from "./types"

@@ -6,7 +6,9 @@ import {
   JoCollapseItem,
   JoAlert,
   JoTooltip,
-  JoPopconfirm
+  JoDropdown,
+  JoDropdownItem,
+  JoPopconfirm,
 } from "@jonny-element/components";
 
 import type { Plugin } from "vue";
@@ -19,5 +21,7 @@ export default [
   JoCollapseItem,
   JoAlert,
   JoTooltip,
-  JoPopconfirm
+  JoDropdown,
+  JoDropdownItem,
+  JoPopconfirm,
 ] as Plugin[];//导出数组
