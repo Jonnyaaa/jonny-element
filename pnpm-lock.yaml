@@ -4058,7 +4058,7 @@ packages:
     resolution: {integrity: sha512-x/+Cz4YrimQxQccJf5mKEbIa1NzeCRNI5Ecl/ekmlYaampdNLPalVyIcCZNNH3MvmqBugV5TMYZXv0ljslUlaw==}
     engines: {node: '>= 0.4'}
 
-  safer-buffer@2.1.2:
+  safjo-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
   sass@1.93.2:
@@ -7748,11 +7748,11 @@ snapshots:
 
   iconv-lite@0.6.3:
     dependencies:
-      safer-buffer: 2.1.2
+      safjo-buffer: 2.1.2
 
   iconv-lite@0.7.0:
     dependencies:
-      safer-buffer: 2.1.2
+      safjo-buffer: 2.1.2
 
   immutable@5.1.4: {}
 
@@ -9018,7 +9018,7 @@ snapshots:
       es-errors: 1.3.0
       is-regex: 1.2.1
 
-  safer-buffer@2.1.2: {}
+  safjo-buffer@2.1.2: {}
 
   sass@1.93.2:
     dependencies:
