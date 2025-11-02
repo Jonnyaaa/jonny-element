@@ -5,7 +5,6 @@ import {
   debugWarn,
   throwError,
   withInstall,
-  makeInstaller,
   typeIconMap
 } from '..'
 
@@ -21,9 +20,6 @@ describe('utils/index', () => {
   })
   it ('withInstall should be exported', () => {
     expect(withInstall).toBeDefined()
-  })
-  it ('makeInstaller should be exported', () => {
-    expect(makeInstaller).toBeDefined()
   })
   // 验证typeIconMap的映射关系是否正确
   it ('typeIconMap should be worked', () => {

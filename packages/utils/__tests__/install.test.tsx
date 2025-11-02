@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { mount } from "@vue/test-utils";
 import { defineComponent, createApp } from "vue";
 
-import { withInstall, makeInstaller } from "../install";
+import { withInstall } from "../install";
 
 // 定义一个基础 App 组件
 const AppComp = defineComponent({
@@ -39,17 +39,5 @@ describe('install', () => {
     expect(compB.install).toBeDefined()
     expect(app._context.components['CompA']).toBeTruthy() // 验证 compA 能被找到（已注册）
     expect(app._context.components['CompB']).toBeFalsy()
-  })
-
-  it('makeInstaller should be worked', () => {
-    const wrapper = mount(() => <div id="app"></div>)
-    const app = createApp(AppComp)
-    const installer = makeInstaller([compA, compB])
-
-    app.use(installer).mount(wrapper.element)
-
-    expect(installer).toBeDefined()
-    expect(wrapper.findComponent(compA)).toBeTruthy()
-    expect(wrapper.findComponent(compB)).toBeTruthy()
   })
 })

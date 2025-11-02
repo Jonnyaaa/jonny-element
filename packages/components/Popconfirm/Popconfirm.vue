@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { addUnit } from "@jonny-element/utils";
+import { useLocale } from "@jonny-element/hooks";
 import type { TooltipInstance } from "../Tooltip";
 import type { PopconfirmProps, PopconfirmEmits } from "./types";
 
@@ -15,8 +16,6 @@ defineOptions({
 const props = withDefaults(defineProps<PopconfirmProps>(), {
   title: "",
   confirmButtonType: "primary",
-  confirmButtonText: "Yes",
-  cancelButtonText: "No",
   icon: "question-circle",
   iconColor: "#f90",
   hideAfter: 200,
@@ -26,6 +25,8 @@ const props = withDefaults(defineProps<PopconfirmProps>(), {
 const emits = defineEmits<PopconfirmEmits>();
 const tooltipRef = ref<TooltipInstance>();
 const style = computed(() => ({ width: addUnit(props.width) }));
+
+const { t } = useLocale();
 
 function hidePopper() {
   tooltipRef.value?.hide();
@@ -52,10 +53,10 @@ function cancel(e: MouseEvent) {
         </div>
         <div class="jo-popconfirm__action">
           <jo-button class="jo-popconfirm__cancel"  size="small" :type="cancelButtonType" @click="cancel">
-            {{ cancelButtonText }}
+            {{ cancelButtonText || t("popconfirm.cancelButtonText") }}
           </jo-button>
           <jo-button class="jo-popconfirm__confirm"  size="small" :type="confirmButtonType" @click="confrim">
-            {{ confirmButtonText }}
+            {{ confirmButtonText || t("popconfirm.confirmButtonText") }}
           </jo-button>
         </div>
       </div>
