@@ -11,13 +11,15 @@ import type {
   MessageType,
 } from "./types";
 import { messageTypes } from "./types";
-import { isString, findIndex, set, each } from "lodash-es";
+import { useId,useZIndex } from "@jonny-element/hooks";
+import { isString, findIndex, set, each, get } from "lodash-es";
 import MessageConstructor from "./Message.vue";
 
-let seed = 0;
+// let seed = 0;
 
 // 消息实例队列，存储所有正在显示的消息，浅响应式便于监听变化
 const instances: MessageInstance[] = shallowReactive([]);
+const { nextZIndex } = useZIndex()
 
 export const messageDefaults = {
   type: "info",
@@ -40,7 +42,8 @@ const normalizedOptions = (opts: MessageParams): CreateMessageProps => {
 
 // 关键点：创建消息实例
 const createMessage = (props: CreateMessageProps): MessageInstance => {
-  const id = `message_${seed++}`;
+  // const id = `message_${seed++}`;
+  const id = useId().value
   // 创建临时 DOM 容器（用于挂载消息组件）
   const container = document.createElement("div");
 
@@ -60,7 +63,7 @@ const createMessage = (props: CreateMessageProps): MessageInstance => {
   const _props: MessageProps = {
     ...props,
     id,
-    zIndex: 200,
+    zIndex: nextZIndex(),
     onDestory: destory,
   };
   // 创建消息组件的虚拟节点
@@ -89,6 +92,16 @@ const createMessage = (props: CreateMessageProps): MessageInstance => {
 
   return instance;
 };
+
+export function getLastBottomOffset(this: MessageProps) {
+  // 查找当前消息实例在实例队列中的索引
+  const idx = findIndex(instances, { id: this.id });
+  // 如果是第一个消息（索引0）或找不到，返回0（无偏移）
+  if (idx <= 0) return 0;
+
+  // 否则返回前一个消息实例的底部偏移量
+  return get(instances, [idx - 1, "vm", "exposed", "bottomOffset", "value"]);
+}
 
 // 消息主函数
 export const message: MessageFn & Partial<Message> = (options = {}) => {

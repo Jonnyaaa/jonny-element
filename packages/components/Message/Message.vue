@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import type { MessageProps } from "./types";
-import { computed, onMounted, ref } from "vue";
-import { delay } from "lodash-es";
-import { typeIconMap, RenderVnode } from "@jonny-element/utils";
+import type { MessageProps, MessageCompInstance } from "./types";
+import { computed, onMounted, ref, watch } from "vue";
+import { getLastBottomOffset } from "./methods";
+import { delay, bind } from "lodash-es";
+import { useOffset, useEventListener } from "@jonny-element/hooks";
+import { typeIconMap, RenderVnode, addUnit } from "@jonny-element/utils";
+import JoIcon from "../Icon/Icon.vue"
 
 defineOptions({ name: "JoMessage" });
 
@@ -15,8 +18,22 @@ const props = withDefaults(defineProps<MessageProps>(), {
 
 const visible = ref(false);
 const messageRef = ref<HTMLDivElement>();
+
+// 记录消息盒子的高度，用于计算多个消息的偏移位置
+const boxHeight = ref(0)
+
+const { topOffset, bottomOffset } = useOffset({
+  getLastBottomOffset: bind(getLastBottomOffset, props),
+  offset: props.offset,
+  boxHeight
+})
+
 // 根据消息类型计算对应的图标名称
 const iconName = computed(() => typeIconMap.get(props.type) ?? "circle-info");
+
+const customStyle = computed(() => ({
+  top: addUnit(topOffset.value)
+}))
 
 // 存储定时器 ID，用于清除计时
 let timer: number;
@@ -37,18 +54,32 @@ function close() {
   visible.value = false;
 }
 
+watch(visible, (val) => {
+  if (!val) boxHeight.value = -props.offset // 使得退出的动画更加流畅
+})
+
+useEventListener(document, "keydown", (e: Event) => {
+  const { code } = e as KeyboardEvent
+  if (code === 'Escape') close()
+})
+
 onMounted(() => {
   visible.value = true;
   startTimer();
 });
 
-defineExpose({
-  close
+defineExpose<MessageCompInstance>({
+  close,
+  bottomOffset
 })
 </script>
 
 <template>
-  <Transition :name="transitionName" @after-leave="!visible && onDestory()">
+  <Transition
+    :name="transitionName"
+    @enter="boxHeight = messageRef!.getBoundingClientRect().height"
+    @after-leave="!visible && onDestory()"
+  >
     <div
       ref="messageRef"
       class="jo-message"
@@ -57,6 +88,7 @@ defineExpose({
         'is-close': showClose,
         'text-center': center,
       }"
+      :style="customStyle"
       v-show="visible"
       role="alert"
       @mouseenter="clearTimer"
@@ -74,3 +106,7 @@ defineExpose({
     </div>
   </Transition>
 </template>
+
+<style>
+@import "./style.css";
+</style>

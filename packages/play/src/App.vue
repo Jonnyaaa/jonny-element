@@ -1,30 +1,37 @@
 <script setup lang="ts">
-import { ja, ko, en, zhCn, zhTw, JoConfigProvider } from "jonny-element";
-import { get } from "lodash-es";
-import { computed, ref } from "vue";
-
-const language = ref("");
-const langMap = {
-  ja,
-  ko,
-  en,
-  zhCn,
-  zhTw,
-} as const;
-const locale = computed(() => get(langMap, language.value));
-const changelang = () => {
-  const l = ["zhCn", "zhTw", "ko", "en", "ja"];
-  language.value = l[(l.indexOf(language.value) + 1) % l.length];
+import { JoMessage } from "jonny-element";
+const open1 = () => {
+  JoMessage({
+    showClose: true,
+    message: "This is a message.",
+  });
+};
+const open2 = () => {
+  JoMessage({
+    showClose: true,
+    message: "Congrats, this is a success message.",
+    type: "success",
+  });
+};
+const open3 = () => {
+  JoMessage({
+    showClose: true,
+    message: "Warning, this is a warning message.",
+    type: "warning",
+  });
+};
+const open4 = () => {
+  JoMessage({
+    showClose: true,
+    message: "Oops, this is a error message.",
+    type: "danger",
+  });
 };
 </script>
 
 <template>
-  <jo-button @click="changelang" type="info" style="margin-right: 20px"
-    >change language</jo-button
-  >
-  <jo-config-provider :locale="locale">
-    <jo-popconfirm title="Are you shure to delete this item?">
-      <jo-button>Delete</jo-button>
-    </jo-popconfirm>
-  </jo-config-provider>
+  <jo-button :plain="true" @click="open1">Message</jo-button>
+  <jo-button :plain="true" @click="open2">Success</jo-button>
+  <jo-button :plain="true" @click="open3">Warning</jo-button>
+  <jo-button :plain="true" @click="open4">Error</jo-button>
 </template>

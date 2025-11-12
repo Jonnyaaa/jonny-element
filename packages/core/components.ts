@@ -9,6 +9,7 @@ import {
   JoDropdown,
   JoDropdownItem,
   JoPopconfirm,
+  JoMessage,
 } from "@jonny-element/components";
 
 import type { Plugin } from "vue";
@@ -24,4 +25,5 @@ export default [
   JoDropdown,
   JoDropdownItem,
   JoPopconfirm,
+  JoMessage,
 ] as Plugin[];//导出数组
