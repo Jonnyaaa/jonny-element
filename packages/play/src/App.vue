@@ -1,37 +1,26 @@
 <script setup lang="ts">
-import { JoMessage } from "jonny-element";
-const open1 = () => {
-  JoMessage({
-    showClose: true,
-    message: "This is a message.",
+import { h } from "vue";
+import { JoNotification } from "jonny-element";
+
+function openNotify1() {
+  JoNotification({
+    title: "Title",
+    message: h("i", { style: "color:teal" }, "This is a remider"),
+    position:'bottom-right'
+  })
+}
+
+function openNotify2() {
+  JoNotification({
+    title: "Prompt",
+    message: "This is a message that does not auto close",
+    duration: 0,
+    position:'top-left'
   });
-};
-const open2 = () => {
-  JoMessage({
-    showClose: true,
-    message: "Congrats, this is a success message.",
-    type: "success",
-  });
-};
-const open3 = () => {
-  JoMessage({
-    showClose: true,
-    message: "Warning, this is a warning message.",
-    type: "warning",
-  });
-};
-const open4 = () => {
-  JoMessage({
-    showClose: true,
-    message: "Oops, this is a error message.",
-    type: "danger",
-  });
-};
+}
 </script>
 
 <template>
-  <jo-button :plain="true" @click="open1">Message</jo-button>
-  <jo-button :plain="true" @click="open2">Success</jo-button>
-  <jo-button :plain="true" @click="open3">Warning</jo-button>
-  <jo-button :plain="true" @click="open4">Error</jo-button>
+  <jo-button @click="openNotify1" plain>Closes automatically</jo-button>
+  <jo-button @click="openNotify2" plain>Won't closes automatically</jo-button>
 </template>

@@ -32,7 +32,8 @@ const { topOffset, bottomOffset } = useOffset({
 const iconName = computed(() => typeIconMap.get(props.type) ?? "circle-info");
 
 const customStyle = computed(() => ({
-  top: addUnit(topOffset.value)
+  top: addUnit(topOffset.value),
+  zIndex: props.zIndex
 }))
 
 // 存储定时器 ID，用于清除计时
