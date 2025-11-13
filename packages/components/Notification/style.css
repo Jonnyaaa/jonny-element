@@ -28,7 +28,13 @@
   overflow-wrap: anywhere;
   overflow: hidden;
   z-index: 9999;
-  right: 10px;
+  &.right {
+    right: 10px;
+  }
+  
+  &.left {
+    left: 10px;
+  }
 
   .jo-notification__text {
     margin: 0 10px;
@@ -82,8 +88,15 @@
 }
 
 .jo-notification-fade-enter-from {
-  right: 0;
-  transform: translate(100%);
+  &.right {
+    right: 0;
+    transform: translate(100%);
+  }
+  
+  &.left {
+    left: 0;
+    transform: translate(-100%);
+  }
 }
 
 .jo-notification-fade-leave-to {
