@@ -26,7 +26,7 @@ const emits = defineEmits<PopconfirmEmits>();
 const tooltipRef = ref<TooltipInstance>();
 const style = computed(() => ({ width: addUnit(props.width) }));
 
-const { t } = useLocale();
+const locale = useLocale();
 
 function hidePopper() {
   tooltipRef.value?.hide();
@@ -53,10 +53,10 @@ function cancel(e: MouseEvent) {
         </div>
         <div class="jo-popconfirm__action">
           <jo-button class="jo-popconfirm__cancel"  size="small" :type="cancelButtonType" @click="cancel">
-            {{ cancelButtonText || t("popconfirm.cancelButtonText") }}
+            {{ cancelButtonText || locale.t("popconfirm.cancelButtonText") }}
           </jo-button>
           <jo-button class="jo-popconfirm__confirm"  size="small" :type="confirmButtonType" @click="confrim">
-            {{ confirmButtonText || t("popconfirm.confirmButtonText") }}
+            {{ confirmButtonText ||locale.t("popconfirm.confirmButtonText") }}
           </jo-button>
         </div>
       </div>

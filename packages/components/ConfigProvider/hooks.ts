@@ -1,4 +1,4 @@
-import { ref, getCurrentInstance, inject, computed, provide, unref } from "vue";
+import { ref, getCurrentInstance, inject, computed, provide, unref,  watch } from "vue";
 import type { MaybeRef, Ref, App } from "vue";
 import {
   type ConfigProviderContext,
@@ -77,17 +77,33 @@ export function provideGlobalConfig(
   }
 
   // 合并配置：将新配置与已有配置合并（新配置优先级更高）
-  const context = computed(() => {
-    const cfg = unref(config);
-    if (!oldCfg?.value) return cfg;
-    return merge(oldCfg.value, cfg);
-  });
+  // const context = computed(() => {
+  //   const cfg = unref(config);
+  //   if (!oldCfg?.value) return cfg;
+  //   return merge(oldCfg.value, cfg);
+  // });
+  const context = ref(unref(config));
+  watch(
+    () => config,
+    (val) => {
+      const cfg = unref(val)
+      if (!oldCfg?.value) return cfg
+      context.value = merge(oldCfg.value, cfg)
+    },
+    { deep: true }
+  )
 
   // 基于合并后的配置创建i18n实例（响应式）
-  const i18n = computed(() => _createI18n(context.value));
+  // const i18n = computed(() => _createI18n(context.value));
+  const i18n = ref(_createI18n(context.value))
+  watch(
+    () => context.value,
+    (val) => (i18n.value = _createI18n(val)),
+    { deep: true }
+  )
 
   provideFn(configProviderContextKey, context); // 注入配置
-  provideFn(i18nSymbol, i18n.value); // 注入i18n实例
+  provideFn(i18nSymbol, i18n); // 注入i18n实例
 
   // 全局注册：若传入app，将i18n实例注册到应用
   if (app) app.use(i18n.value);

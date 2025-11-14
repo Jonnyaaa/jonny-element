@@ -1,26 +1,30 @@
 <script setup lang="ts">
-import { h } from "vue";
-import { JoNotification } from "jonny-element";
+import { ja, ko, en, zhCn, zhTw, JoConfigProvider } from "jonny-element";
+import { get } from "lodash-es";
+import { computed, ref } from "vue";
 
-function openNotify1() {
-  JoNotification({
-    title: "Title",
-    message: h("i", { style: "color:teal" }, "This is a remider"),
-    position:'bottom-right'
-  })
-}
-
-function openNotify2() {
-  JoNotification({
-    title: "Prompt",
-    message: "This is a message that does not auto close",
-    duration: 0,
-    position:'top-left'
-  });
-}
+const language = ref("zhTw");
+const langMap = {
+  ja,
+  ko,
+  en,
+  zhCn,
+  zhTw,
+} as const;
+const locale = computed(() => get(langMap, language.value));
+const changelang = () => {
+  const l = ["zhCn", "zhTw", "ko", "en", "ja"];
+  language.value = l[(l.indexOf(language.value) + 1) % l.length];
+};
 </script>
 
 <template>
-  <jo-button @click="openNotify1" plain>Closes automatically</jo-button>
-  <jo-button @click="openNotify2" plain>Won't closes automatically</jo-button>
+  <jo-button @click="changelang" type="info" style="margin-right: 20px"
+    >change language</jo-button
+  >
+  <jo-config-provider :locale="locale">
+    <jo-popconfirm title="Are you shure to delete this item?">
+      <jo-button>Delete</jo-button>
+    </jo-popconfirm>
+  </jo-config-provider>
 </template>
