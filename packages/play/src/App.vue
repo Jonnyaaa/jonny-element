@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { reactive } from "vue"
+import { JoMessageBox, JoMessage } from "jonny-element";
 
-const form = reactive({
-  name: "",
-  desc: "",
-})
+function openConfirm() {
+  JoMessageBox.confirm("proxy will permanently delete the file. Continue?", "Warning", { type: "warning" })
+    .then((action) => {
+      JoMessage.info(`action: ${action}`);
+    })
+    .catch((action) => {
+      JoMessage.warning(`action: ${action}`);
+    });
+}
 </script>
 
 <template>
-  <jo-input v-model="form.name" show-password type="password" />
-  <jo-input v-model="form.desc" type="textarea" />
+  <jo-button @click="openConfirm" plain> Click to open the Confirm</jo-button>
 </template>
