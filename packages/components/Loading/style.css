@@ -1,0 +1,60 @@
+.jo-loading {
+  --jo-loading-icon-color: var(--jo-color-primary);
+  --jo-loading-mask-margin: 0;
+  --jo-loading-mask-size: 100%;
+  --jo-loading-icon-size: 42px;
+  --jo-loading-font-size: 14px;
+  --jo-loading-z-index: 20000;
+}
+
+.jo-loading {
+  opacity: 1;
+  transition: opacity var(--jo-transition-duration);
+
+  &.jo-loading__mask {
+    position: absolute;
+    margin: var(--jo-loading-mask-margin);
+    top: var(--jo-loading-mask-margin);
+    right: var(--jo-loading-mask-margin);
+    bottom: var(--jo-loading-mask-margin);
+    left: var(--jo-loading-mask-margin);
+    height: var(--jo-loading-mask-size);
+    width: var(--jo-loading-mask-size);
+    z-index: var(--jo-loading-z-index);
+    background: var(--jo-loading-bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.is-fullscreen {
+      position: fixed;
+    }
+  }
+
+  .jo-loading__spinner {
+    color: var(--jo-loading-icon-color);
+    text-align: center;
+
+    .jo-loading-text {
+      margin: 3px 0;
+      font-size: var(--jo-loading-font-size);
+    }
+
+    i {
+      font-size: var(--jo-loading-icon-size);
+    }
+  }
+}
+
+/* .fade-in-linear-enter-from,
+.fade-in-linear-leave-to {
+    opacity: 0;
+} */
+
+.jo-loading-parent--relative {
+  position: relative !important;
+}
+
+.jo-loading-parent--hiden {
+  overflow: hidden !important;
+}

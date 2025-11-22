@@ -13,6 +13,7 @@ import {
   JoNotification,
   JoInput,
   JoMessageBox,
+  JoLoading,
 } from "@jonny-element/components";
 
 import type { Plugin } from "vue";
@@ -32,4 +33,5 @@ export default [
   JoNotification,
   JoInput,
   JoMessageBox,
+  JoLoading,
 ] as Plugin[];//导出数组
