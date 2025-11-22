@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { JoLoading } from "jonny-element";
 
 const loading = ref(false);
+const switchVal = ref(1);
 
 /**
  * 方式1：通过指令（v-loading）打开Loading
@@ -45,4 +46,6 @@ function openLoading2() {
     As a directive
   </jo-button>
   <jo-button type="primary" @click="openLoading2"> As a service </jo-button>
+  <jo-switch v-model="switchVal" size="small" :active-value="0" :inactive-value="1" />
+  {{ switchVal }}
 </template>

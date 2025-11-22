@@ -14,6 +14,7 @@ import {
   JoInput,
   JoMessageBox,
   JoLoading,
+  JoSwitch,
 } from "@jonny-element/components";
 
 import type { Plugin } from "vue";
@@ -34,4 +35,5 @@ export default [
   JoInput,
   JoMessageBox,
   JoLoading,
+  JoSwitch,
 ] as Plugin[];//导出数组
