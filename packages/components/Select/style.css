@@ -1,0 +1,86 @@
+.jo-select {
+  --jo-select-item-hover-bg-color: var(--jo-fill-color-light);
+  --jo-select-item-font-size: var(--jo-font-size-base);
+  --jo-select-item-font-color: var(--jo-text-color-regular);
+  --jo-select-item-selected-font-color: var(--jo-color-primary);
+  --jo-select-item-disabled-font-color: var(--jo-text-color-placeholder);
+  --jo-select-input-focus-border-color: var(--jo-color-primary);
+}
+
+.jo-select {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 32px;
+
+  :deep(.jo-tooltip__popper) {
+    padding: 0;
+  }
+
+  :deep(.jo-input) {
+    .header-angle {
+      transition: transform var(--jo-transition-duration);
+
+      &.is-active {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .jo-select__nodata,
+  .jo-select__loading {
+    padding: 10px 0;
+    margin: 0;
+    text-align: center;
+    color: var(--jo-text-color-secondary);
+    font-size: var(--jo-select-font-size);
+  }
+
+  .jo-select__menu {
+    list-style: none;
+    margin: 6px 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .jo-select__menu-item {
+    margin: 0;
+    font-size: var(--jo-select-item-font-size);
+    padding: 0 32px 0 20px;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--jo-select-item-font-color);
+    height: 34px;
+    line-height: 34px;
+    box-sizing: border-box;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--jo-select-item-hover-bg-color);
+    }
+
+    &.is-selected {
+      color: var(--jo-select-item-selected-font-color);
+      font-weight: 700;
+    }
+
+    &.is-highlighted {
+      background-color: var(--jo-select-item-hover-bg-color);
+    }
+
+    &.is-disabled {
+      color: var(--jo-select-item-disabled-font-color);
+      cursor: not-allowed;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
+  }
+
+  :deep(.jo-input__inner) {
+    cursor: pointer;
+  }
+}

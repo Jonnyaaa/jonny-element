@@ -15,6 +15,8 @@ import {
   JoMessageBox,
   JoLoading,
   JoSwitch,
+  JoSelect,
+  JoOption,
 } from "@jonny-element/components";
 
 import type { Plugin } from "vue";
@@ -36,4 +38,6 @@ export default [
   JoMessageBox,
   JoLoading,
   JoSwitch,
+  JoSelect,
+  JoOption,
 ] as Plugin[];//导出数组
