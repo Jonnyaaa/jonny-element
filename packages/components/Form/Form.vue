@@ -5,14 +5,13 @@ import type {
   FormItemContext,
   FormContext,
   FormInstance,
-  FormValidateCallback,
 } from "./types";
 
 import { FORM_CTX_KEY } from "./constants";
 import { reactive, toRefs, provide } from "vue";
 import { each, filter, includes, size } from "lodash-es";
 // 导入验证库的错误类型
-import type { ValidateError, ValidateFieldsError } from "async-validator";
+import type { ValidateFieldsError } from "async-validator";
 
 defineOptions({ name: "JoForm" });
 const props = withDefaults(defineProps<FormProps>(), {
@@ -92,7 +91,7 @@ const validateField: FormInstance["validateField"] = async function (
 ) {
   try {
     // 筛选需要验证的表单项并执行验证
-    const result = await doValidateField(filterFields(fields, keys ?? []));
+    const result = await doValidateField(filterFields(fields, keys));
     if (result === true) {
       // 验证成功，调用回调
       callback?.(result);
@@ -113,13 +112,13 @@ const validateField: FormInstance["validateField"] = async function (
  */
 const resetFields: FormInstance["resetFields"] = function (keys) {
   // 筛选需要重置的表单项，逐个调用其resetField方法
-  each(filterFields(fields, keys ?? []), (field) => field.resetField());
+  each(filterFields(fields, keys), (field) => field.resetField());
 };
 
 // 清除指定表单项的验证状态（不改变值，只清除错误信息）
 const clearValidate: FormInstance["clearValidate"] = function (keys) {
   // 筛选目标表单项，逐个调用其clearValidate方法
-  each(filterFields(fields, keys ?? []), (field) => field.clearValidate());
+  each(filterFields(fields, keys), (field) => field.clearValidate());
 };
 
 /**
@@ -128,7 +127,7 @@ const clearValidate: FormInstance["clearValidate"] = function (keys) {
  * @param keys 需要筛选的prop数组
  * @returns 筛选后的表单项数组（若keys为空则返回所有）
  */
-function filterFields(fields: FormItemContext[], keys: string[]) {
+function filterFields(fields: FormItemContext[], keys: string[] = []) {
   return size(keys)
     ? filter(fields, (field) => includes(keys, field.prop))
     : fields;

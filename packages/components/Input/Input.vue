@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, useAttrs, shallowRef, nextTick } from "vue";
-import { useFocusController, useId } from "@jonny-element/hooks";
-import { useFormItem } from "../Form";
+import { useFocusController } from "@jonny-element/hooks";
+import { useFormItem, useFormDisabled, useFormItemInputId } from "../Form";
 import { each, noop } from "lodash-es";
 import type { InputProps, InputEmits, InputInstance } from "./types";
 
@@ -26,12 +26,14 @@ const pwdVisible = ref(false);
 const inputRef = shallowRef<HTMLInputElement>();
 const textareaRef = shallowRef<HTMLTextAreaElement>();
 
-const { formItem } = useFormItem();
 const _ref = computed(() => inputRef.value || textareaRef.value);
 
 // 获取父组件传递的非Props属性（如style、class等原生属性）
 const attrs = useAttrs();
-const isDisabled = computed(() => props.disabled);
+const isDisabled = useFormDisabled();
+const { formItem } = useFormItem();
+
+const { inputId } = useFormItemInputId(props, formItem);
 
 // 计算属性：是否显示清除按钮
 // 条件：开启clearable + 输入框有值 + 未禁用 + 已聚焦
@@ -139,7 +141,7 @@ defineExpose<InputInstance>({
         <input
           class="jo-input__inner"
           ref="inputRef"
-          :id="useId().value"
+          :id="inputId"
           :type="showPassword ? (pwdVisible ? 'text' : 'password') : type"
           :disabled="isDisabled"
           :readonly="readonly"
@@ -188,7 +190,7 @@ defineExpose<InputInstance>({
       <textarea
         class="jo-textarea__wrapper"
         ref="textareaRef"
-        :id="useId().value"
+        :id="inputId"
         :disabled="isDisabled"
         :readonly="readonly"
         :autocomplete="autocomplete"

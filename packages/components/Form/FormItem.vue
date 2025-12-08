@@ -12,17 +12,17 @@ import type {
 // 导入异步验证库，用于表单验证逻辑
 import Schema, { type RuleItem } from "async-validator";
 // 导入上下文键，用于依赖注入
-import { FORM_CTX_KEY, FORM_ITEM_CTX_KEY } from "./constants";
 import {
+  type Ref,
+  ref,
   inject,
   onMounted,
-  ref,
   reactive,
   toRefs,
   computed,
   onUnmounted,
-  type Ref,
   provide,
+  nextTick,
 } from "vue";
 import {
   isNil,
@@ -35,9 +35,13 @@ import {
   keys,
   isArray,
   cloneDeep,
+  some,
+  isNumber,
+  endsWith,
 } from "lodash-es";
-// 导入nextTick，用于等待DOM更新
-import { nextTick } from "process";
+import { useId } from "@jonny-element/hooks";
+
+import { FORM_CTX_KEY, FORM_ITEM_CTX_KEY } from "./constants";
 
 defineOptions({ name: "JoFormItem" });
 
@@ -49,9 +53,15 @@ const slots = defineSlots();
 // 从父级表单注入表单上下文（包含表单的模型、规则等）
 const ctx = inject(FORM_CTX_KEY);
 
+// 生成唯一的label ID
+const labelId = useId().value;
+
 // 表单项验证状态（初始/成功/错误/验证中）
 const validateStatus: Ref<ValidateStatus> = ref("init");
 const errMsg = ref("");
+
+// 存储关联的输入框ID列表
+const inputIds = ref<string[]>([]);
 
 /**
  * 根据属性名从目标对象中获取值
@@ -65,7 +75,38 @@ const getValByProp = (target: Record<string, any> | void) => {
   return null;
 };
 
+// 计算是否存在标签（属性或插槽）
+const hasLabel = computed(() => !!(props.label || slots.label));
+
+// 计算标签关联的输入框ID
+const labelFor = computed(
+  () => props.for || (inputIds.value.length ? inputIds.value[0] : "")
+);
+
+// 计算当前标签文本（包含后缀）
+const currentLabel = computed(
+  () => `${props.label ?? ""}${ctx?.labelSuffix ?? ""}`
+);
+
+// 标准化标签宽度（处理数字和字符串单位）
+const normalizeLabelWidth = computed(() => {
+  const _normalizeStyle = (val: number | string) => {
+    if (isNumber(val)) return `${val}px`;
+    return endsWith(val, "px") ? val : `${val}px`;
+  };
+  if (props.labelWidth) return _normalizeStyle(props.labelWidth);
+  if (ctx?.labelWidth) return _normalizeStyle(ctx?.labelWidth);
+  return "150px"; // 默认宽度
+});
+
 const isDisabled = computed(() => ctx?.disabled || props.disabled);
+
+// 计算是否为必填项（从规则或属性推断）
+const isRequired = computed(
+  () =>
+    (!ctx?.hideRequiredAsterisk && some(itemRules.value, "required")) ||
+    props?.required
+);
 
 // 获取当前表单项对应的值（从表单的model中读取）
 const innerVal = computed(() => {
@@ -236,6 +277,16 @@ const clearValidate: FormItemInstance["clearValidate"] = function () {
   isResetting = false; // 重置状态结束
 };
 
+// 添加关联的输入框ID
+const addInputId: FormItemContext["addInputId"] = function (id) {
+  if (!includes(inputIds.value, id)) inputIds.value.push(id);
+};
+
+// 移除关联的输入框ID
+const removeInputId: FormItemContext["removeInputId"] = function (id) {
+  inputIds.value = filter(inputIds.value, (i) => i !== id);
+};
+
 // 构建表单项上下文（提供给子组件使用）
 const formItemCtx: FormItemContext = reactive({
   ...toRefs(props), // 将props转为响应式ref
@@ -243,8 +294,8 @@ const formItemCtx: FormItemContext = reactive({
   validate, // 验证方法
   resetField, // 重置方法
   clearValidate, // 清除验证状态方法
-  addInputId: () => {},
-  removeInputId: () => {},
+  addInputId,
+  removeInputId,
 });
 
 // 组件挂载后执行
@@ -277,11 +328,33 @@ defineExpose<FormItemInstance>({
 </script>
 
 <template>
-  <div class="jo-form-item">
+  <div
+    class="jo-form-item"
+    :class="{
+      'is-error': validateStatus === 'error',
+      'is-disabled': isDisabled,
+      'is-required': isRequired,
+      'asterisk-left': ctx?.requiredAsteriskPosition === 'left',
+      'asterisk-right': ctx?.requiredAsteriskPosition === 'right',
+    }"
+  >
+    <!-- 表单项标签 -->
+    <component
+      v-if="hasLabel"
+      class="jo-form-item__label"
+      :class="`position-${ctx?.labelPosition ?? `right`}`"
+      :is="labelFor ? 'label' : 'div'"
+      :id="labelId"
+      :for="labelFor"
+    >
+      <slot name="label" :label="currentLabel">
+        {{ currentLabel }}
+      </slot>
+    </component>
     <div class="jo-form-item__content">
       <!-- 表单项内容插槽 -->
-      <slot></slot>
-      <div class="jo-form-item_error-msg" v-if="validateStatus === 'error'">
+      <slot :validate="validate"></slot>
+      <div class="jo-form-item__error-msg" v-if="validateStatus === 'error'">
         <template v-if="ctx?.showMessage && showMessage">
           <!-- 错误信息插槽，默认显示errMsg -->
           <slot name="error" :error="errMsg">{{ errMsg }}</slot>
@@ -290,3 +363,12 @@ defineExpose<FormItemInstance>({
     </div>
   </div>
 </template>
+
+<style scoped>
+@import "./style.css";
+
+/* 绑定动态计算的标签宽度变量 */
+.jo-form-item {
+  --jo-form-lebel-width: v-bind(normalizeLabelWidth) !important;
+}
+</style>
