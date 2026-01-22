@@ -1,5 +1,5 @@
 <script setup>
-import { JoMessage } from "eric-ui";
+import { JoMessage } from "jonny-element";
 
 function handleClose() {
   JoMessage.info("close callback");

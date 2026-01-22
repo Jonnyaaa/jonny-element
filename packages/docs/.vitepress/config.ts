@@ -30,7 +30,27 @@ export default defineConfig({
         collapsed: false,
         items: [
           { text: "Button 按钮", link: "components/button" },
+          { text: "Collapse 折叠面板", link: "components/collapse" },
+          { text: "Dropdown 下拉菜单", link: "components/dropdown" },
         ],
+      },
+      {
+        text: "反馈组件",
+        collapsed: false,
+        items: [
+          { text: "Alert 提示", link: "components/alert" },
+          { text: "Loading 加载", link: "components/loading" },
+          { text: "Message 消息提示", link: "components/message" },
+          { text: "MessageBox 消息弹出框", link: "components/messagebox" },
+          { text: "Notification 通知", link: "components/notification" },
+          { text: "Popconfirm 气泡确认框", link: "components/popconfirm" },
+          { text: "Tooltip 文字提示", link: "components/tooltip" },
+        ],
+      },
+      {
+        text: "表单组件",
+        collapsed: false,
+        items: [{ text: "Form 表单", link: "components/form" }],
       },
     ],
 
